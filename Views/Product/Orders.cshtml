@@ -1,1 +1,36 @@
-<h1>Hello!!</h1>
+@using Northwind.Models;
+@model IEnumerable<Order>
+
+<table class="table">
+    <thead class="thead-dark">
+        <th>Order ID</th>
+        <th>Customer ID</th>
+        <th>Date Ordered</th>
+        <th>Date Required</th>
+        <th>Date Shipped</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>State/Region</th>
+        <th>Postal Code</th>
+        <th>Country</th>
+    </thead>
+    <tbody>
+        <!-- The table rows -->
+        @foreach(Order order in Model){
+            @if(order != null){
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.CustomerId</td>
+                    <td>@order.OrderDate</td>
+                    <td>@order.RequiredDate</td>
+                    <td>@order.ShippedDate</td>
+                    <td>@order.ShipAddress</td>
+                    <td>@order.ShipCity</td>
+                    <td>@(order.ShipRegion != null ? order.ShipRegion : "N/A")</td>
+                    <td>@order.ShipPostalCode</td>
+                    <td>@order.ShipCountry</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

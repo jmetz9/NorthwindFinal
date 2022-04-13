@@ -1,6 +1,20 @@
 @using Northwind.Models;
 @model IEnumerable<Order>
 
+<h1>Orders</h1>
+<form class="mb-3">
+    <div class="row">
+        <div class="col-3">
+            <label for="filterType">Filter By...</label>
+        </div>
+        <div class="col-3">
+            <select id="filterType" class="form-control">
+                <option value="overdue">Overdue</option>
+            </select>
+        </div>
+    </div>
+    <button class="btn btn-secondary">Filter</button>
+</form>
 <table class="table">
     <thead class="thead-dark">
         <th>Order ID</th>

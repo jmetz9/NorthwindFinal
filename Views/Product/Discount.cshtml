@@ -1,0 +1,9 @@
+@using Northwind.Models
+@model IEnumerable<Discount> 
+
+<ul class="list-group">
+    @foreach (Discount discount in Model)
+    {
+        <li class="list-group-item" >@discount.Title - @discount.Code</li>
+    }
+</ul>

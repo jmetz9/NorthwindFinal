@@ -9,7 +9,8 @@
         </div>
         <div class="col-3">
             <select id="filterType" class="form-control">
-                <option value="overdue">Overdue</option>
+                <option value=""> - </option>
+                <option value="overdue" selected>Overdue</option>
             </select>
         </div>
     </div>
@@ -30,6 +31,7 @@
     </thead>
     <tbody>
         <!-- The table rows -->
+        <!--
         @foreach(Order order in Model){
             @if(order != null){
                 <tr>
@@ -46,5 +48,52 @@
                 </tr>
             }
         }
+        -->
     </tbody>
 </table>
+@section scripts
+{
+    <script>
+        $(function(){
+            getOrders();
+            function getOrders(){
+                console.log("Getting orders");
+                let orders;
+                let url;
+                if($("#filterType").val() === 'overdue'){
+                    url = "../../api/orders/overdue";
+                } else {
+                    url = "../../api/orders";
+                }
+                $.getJSON({
+                    url: url,
+                    success: function (response, textStatus, jqXhr) {
+                        orders = response;
+                        for(let i = 0; i < response.length; i++){
+                            console.log(response[i]);
+                            let row = `
+                                <tr>
+                                    <td>${response[i].orderId}</td>
+                                    <td>${response[i].customerId}</td>
+                                    <td>${new Date(response[i].orderDate).toLocaleDateString()}</td>
+                                    <td>${new Date(response[i].requiredDate).toLocaleDateString()}</td>
+                                    <td>${response[i].shippedDate != null ? new Date(response[i].shippedDate).toLocaleDateString() : "N/A"}</td>
+                                    <td>${response[i].shipAddress}</td>
+                                    <td>${response[i].shipCity}</td>
+                                    <td>${response[i].shipRegion != null ? response[i].shipRegion : "N/A"}</td>
+                                    <td>${response[i].shipPostalCode}</td>
+                                    <td>${response[i].shipCountry}</td>
+                                </tr>
+                            `
+                            $("tbody").append(row);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        // log the error to the console
+                        console.log("The following error occured: " + textStatus, errorThrown);
+                    }
+                });
+            }
+        });
+    </script>
+}

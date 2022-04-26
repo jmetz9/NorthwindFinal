@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Northwind.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Northwind.Controllers
 {
@@ -20,6 +21,7 @@ namespace Northwind.Controllers
 
         public IActionResult Discount() => View(_northwindContext.Discounts.Where(d => DateTime.Compare(d.StartTime,DateTime.Now) <= 0 && DateTime.Compare(d.EndTime,DateTime.Now) > 0));
             
+        [Authorize(Roles = "northwind-employee")]
         public IActionResult Orders() => View();
     }
 }

@@ -28,9 +28,11 @@ namespace Northwind.Controllers
         public IEnumerable<Product> GetByCategoryDiscontinued(int CategoryId, bool discontinued) => _northwindContext.Products.Where(p => p.CategoryId == CategoryId && p.Discontinued == discontinued).OrderBy(p => p.ProductName);
 
         [HttpGet, Route("api/orders/overdue")]
-        public IEnumerable<Order> GetOverdueOrders() => _northwindContext.Orders.Where(o => o.RequiredDate <= System.DateTime.Now && o.ShippedDate == null).OrderBy(o => o.OrderDate);
+        public IEnumerable<Order> GetOverdueOrders() => _northwindContext.Orders.Where(o => o.RequiredDate.Value.Date <= System.DateTime.Now.Date && o.ShippedDate == null).OrderBy(o => o.OrderDate);
         
         [HttpGet, Route("api/orders/")]
         public IEnumerable<Order> GetOrders() => _northwindContext.Orders.OrderBy(o => o.OrderDate);
+        [HttpGet, Route("api/orders/overdue/{daysAlmostOverdue}")]
+        public IEnumerable<Order> GetNearOverdueOrders(int daysAlmostOverdue) => _northwindContext.Orders.Where(o => o.RequiredDate.Value.Date <= System.DateTime.Now.AddDays(daysAlmostOverdue).Date && o.RequiredDate.Value.Date > System.DateTime.Now.Date && o.ShippedDate == null).OrderBy(o => o.OrderDate);
     }
 }

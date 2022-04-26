@@ -52,6 +52,8 @@
                 let url;
                 if($("#filterType").val() === 'overdue'){
                     url = "../../api/orders/overdue";
+                } else if ($("#filterType").val() === 'near-overdue-1-day'){
+                    url = "../../api/orders/overdue/1";
                 } else {
                     url = "../../api/orders";
                 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Northwind.Models;
 
 namespace Northwind.Controllers
@@ -28,11 +29,14 @@ namespace Northwind.Controllers
         public IEnumerable<Product> GetByCategoryDiscontinued(int CategoryId, bool discontinued) => _northwindContext.Products.Where(p => p.CategoryId == CategoryId && p.Discontinued == discontinued).OrderBy(p => p.ProductName);
 
         [HttpGet, Route("api/orders/overdue")]
+        [Authorize(Roles = "northwind-employee")]
         public IEnumerable<Order> GetOverdueOrders() => _northwindContext.Orders.Where(o => o.RequiredDate.Value.Date <= System.DateTime.Now.Date && o.ShippedDate == null).OrderBy(o => o.OrderDate);
         
         [HttpGet, Route("api/orders/")]
+        [Authorize(Roles = "northwind-employee")]
         public IEnumerable<Order> GetOrders() => _northwindContext.Orders.OrderBy(o => o.OrderDate);
         [HttpGet, Route("api/orders/overdue/{daysAlmostOverdue}")]
+        [Authorize(Roles = "northwind-employee")]
         public IEnumerable<Order> GetNearOverdueOrders(int daysAlmostOverdue) => _northwindContext.Orders.Where(o => o.RequiredDate.Value.Date <= System.DateTime.Now.AddDays(daysAlmostOverdue).Date && o.RequiredDate.Value.Date > System.DateTime.Now.Date && o.ShippedDate == null).OrderBy(o => o.OrderDate);
     }
 }
